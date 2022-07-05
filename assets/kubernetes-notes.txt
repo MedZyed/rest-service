@@ -1,0 +1,115 @@
+##################################################################
+#      _  __     _                          _                    #
+#     | |/ /   _| |__   ___ _ __ _ __   ___| |_ ___  ___         #
+#     | ' / | | | '_ \ / _ \ '__| '_ \ / _ \ __/ _ \/ __|        #
+#     | . \ |_| | |_) |  __/ |  | | | |  __/ ||  __/\__ \        #
+#     |_|\_\__,_|_.__/ \___|_|  |_| |_|\___|\__\___||___/        #
+#     															 #
+##################################################################
+
+A Kubernetes Pod is a group of one or more Containers, tied together for the purposes of administration and networking. 
+A Kubernetes Deployment checks on the health of your Pod and restarts the Pod's Container if it terminates. 
+Deployments are the recommended way to manage the creation and scaling of Pods.
+
+** Pods vs Nodes :
+
+Pods are an abstraction of executable code, nodes are abstractions of computer hardware, so the comparison is a bit apples-and-oranges.
+Pods are simply the smallest unit of execution in Kubernetes, consisting of one or more containers, each with one or more application and its binaries.
+Nodes are the physical servers or VMs that comprise a Kubernetes Cluster. Nodes are interchangeable and typically not addressed individually by users or IT, 
+other than when maintenance is required.
+
+A Pod is a group of one or more application containers (such as Docker) and includes shared storage (volumes), IP address and information about how to run them.
+
+
+** Create a Deployment :
+
+	# Create deployment for a pod running a container with provided docker image :
+		$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
+		
+	# View deployments :
+		$ kubectl get deployments 
+		
+	# View pods :
+		$ kubectl get pods
+		
+	# View cluster events :
+		$ kubectl get events
+		
+	# View the kubectl configuration :
+		$ kubectl config view
+		
+	# View nodes information :
+		$ kubectl get nodes
+	
+** Create a Service :
+A Service in Kubernetes is an abstraction which defines a logical set of Pods and a policy by which to access them. 
+Services enable a loose coupling between dependent Pods. A Service is defined using YAML (preferred) or JSON, like all Kubernetes objects. 
+The set of Pods targeted by a Service is usually determined by a LabelSelector (see below for why you might want a Service without including selector in the spec).
+
+Although each Pod has a unique IP address, those IPs are not exposed outside the cluster without a Service. 
+Services allow your applications to receive traffic. 
+Services can be exposed in different ways by specifying a type in the ServiceSpec:
+
+	- ClusterIP (default) - Exposes the Service on an internal IP in the cluster. 
+	  This type makes the Service only reachable from within the cluster.
+	- NodePort - Exposes the Service on the same port of each selected Node in the cluster using NAT. 
+	  Makes a Service accessible from outside the cluster using <NodeIP>:<NodePort>. Superset of ClusterIP.
+	- LoadBalancer - Creates an external load balancer in the current cloud (if supported) and assigns a fixed, external IP to the Service. Superset of NodePort.
+	- ExternalName - Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. 
+	 No proxying of any kind is set up. This type requires v1.7 or higher of kube-dns, or CoreDNS version 0.0.8 or higher.
+
+By default, the Pod is only accessible by its internal IP address within the Kubernetes cluster. 
+To make the hello-node Container accessible from outside the Kubernetes virtual network, you have to expose the Pod as a Kubernetes Service.
+
+	# Expose the Pod to the public internet using the kubectl expose command :
+		$ kubectl expose deployment hello-node --type=LoadBalancer --port=8080 (LoadBalancer not yet available on Minikube)
+		$ kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+		
+	# Get the url to access the exposed service 
+		$ curl $(minikube ip):$NODE_PORT
+		$ minikube service backend-node --url
+	
+	# Using port forward since the latter command doesn't work
+		$ kubectl port-forward service/backend-node 8080:8080
+	
+		
+	# View the service :
+		$ kubectl get services
+		
+	# On minikube, the LoadBalancer type makes the Service accessible through the minikube service command :
+		$ minikube service hello-node
+		
+	# Query pods/services usings labels
+		$ kubectl get pods -l app=kubernetes-bootcamp
+		$ kubectl get services -l app=kubernetes-bootcamp
+		
+	# Apply a new labels
+		$ kubectl label pods $POD_NAME version=v1
+		
+	# Delete services using label
+		$ kubectl delete service -l app=kubernetes-bootcamp
+		
+** Services and labels :
+
+A Service routes traffic across a set of Pods. Services are the abstraction that allows pods to die and replicate in Kubernetes without impacting your application. 
+Discovery and routing among dependent Pods (such as the frontend and backend components in an application) are handled by Kubernetes Services.
+
+Services match a set of Pods using labels and selectors, a grouping primitive that allows logical operation on objects in Kubernetes. 
+Labels are key/value pairs attached to objects and can be used in any number of ways:
+
+	- Designate objects for development, test, and production
+	- Embed version tags
+	- Classify an object using tags
+
+** Explore the application :
+
+	# Get detailed information about a pod:
+		$ kubectl describe pods
+	
+	# View the container logs
+		$ kubectl logs $POD_NAME
+	
+	# Executing command on the container
+		$ kubectl exec $POD_NAME -- env
+		$ kubectl exec - ti $POD_NAME -- bash
+		
