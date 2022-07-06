@@ -4,8 +4,8 @@
 ```
 FROM openjdk:8-jdk-alpine
 MAINTAINER xxxx
-COPY build/libs/rest-service-0.0.1-SNAPSHOT.jar demo-backend.jar
-ENTRYPOINT ["java","-jar","/demo-backend.jar"]
+COPY build/libs/rest-service-0.0.1-SNAPSHOT.jar demo-backend-0.0.1.jar
+ENTRYPOINT ["java","-jar","/demo-backend-0.0.1.jar"]
 ```
 
 ### Build docker image (and tag)
@@ -53,3 +53,24 @@ In this case, we should call the URL http://localhost:8085/greeting
 kubectl port-forward service/backend-node 8085:8080
 ```
 ![Port forwarding](/assets/service_port_forward.png)
+
+# Connecting backend and frontend
+***
+
+### Create deployment with configuration file
+After cleaning up the old deployment, run below commands (in the project's root path) :
+```
+kubectl apply -f ./scripts/backend-deployment.yaml
+```
+
+### Create service with configuration file
+Please note that the exposed port is 80. This is done on purpose since it will be the same port used by the frontend service.
+```
+kubectl apply -f ./scripts/backend-service.yaml
+```
+
+### Backend Sanity Check
+We will create a port forwarding to the backend service to be able to call the api using postman or curl (need to be stopped once the check is over) :
+```
+kubectl port-forward service/docker-k8s-demo-backend-svc 8085:80
+```
