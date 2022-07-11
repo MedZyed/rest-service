@@ -1,10 +1,10 @@
-package com.example.restservice.heroes;
+package com.example.restservice.heroes.model;
 
 import java.util.Objects;
 
 public class Hero {
 
-    private int id;
+    private long id;
     private String name;
 
     public Hero(int id, String name) {
@@ -12,11 +12,11 @@ public class Hero {
         this.name = name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

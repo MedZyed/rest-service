@@ -1,20 +1,18 @@
-package com.example.restservice.heroes;
+package com.example.restservice.heroes.controller;
 
+import com.example.restservice.heroes.model.Hero;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api-old")
 public class HeroesController {
 
     private static final Logger logger = LoggerFactory.getLogger(HeroesController.class);

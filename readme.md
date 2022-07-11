@@ -74,3 +74,14 @@ We will create a port forwarding to the backend service to be able to call the a
 ```
 kubectl port-forward service/docker-k8s-demo-backend-svc 8085:80
 ```
+
+# Postgres Docker Image
+To access the database, you need first to get inside the container like below:
+```
+docker run -d --rm -p 5432:5432 --name postgres -e POSTGRES_DB=docker-k8s-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
+docker exec -it postgres /bin/bash
+```
+And then execute below command to connect to the database and be able to execute psql commands:
+```
+# PGPASSWORD=postgres psql -d docker-k8s-db -U postgres
+```
