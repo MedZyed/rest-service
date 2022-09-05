@@ -8,16 +8,17 @@ group = 'com.example'
 version = '1.1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-/*
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
-*/
+
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
@@ -31,6 +32,15 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+compileJava {
+    options.compilerArgs += [
+            '-Amapstruct.defaultComponentModel=spring',
+            '-Amapstruct.suppressGeneratorTimestamp=true',
+            '-Amapstruct.suppressGeneratorVersionInfoComment=true',
+            '-Amapstruct.verbose=true'
+    ]
 }
 
 test {

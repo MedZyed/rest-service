@@ -1,0 +1,4 @@
+<factorypath>
+    <factorypathentry kind="PLUGIN" id="org.eclipse.jst.ws.annotations.core" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="C:\Users\MohamedZyedMEKKI\.gradle\caches\modules-2\files-2.1\org.mapstruct\mapstruct-processor\1.5.2.Final\74a21679400fceb1f98987926cea1786c0e39e77\mapstruct-processor-1.5.2.Final.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
