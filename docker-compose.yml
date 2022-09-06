@@ -5,6 +5,8 @@ services:
     image: 'rest-service:latest'
     build:
       context: .
+    ports:
+    - "8080:8080"
     container_name: app
     depends_on:
       - db
@@ -21,3 +23,14 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=docker-k8s-db
+
+  frontend:
+    image: 'docker-k8s-front:latest'
+    container_name: hero-ui
+    build:
+      context: ../docker-k8s-front
+    ports:
+      - "4200:80"
+    depends_on:
+      - app

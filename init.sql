@@ -1,0 +1,3 @@
+CREATE USER admin;
+CREATE DATABASE docker-k8s-db;
+GRANT ALL PRIVILEGES ON DATABASE docker-k8s-db TO admin;
