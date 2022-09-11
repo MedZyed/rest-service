@@ -24,7 +24,7 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-        - image: docker-k8s-front:latest
+        - image: medzyed/docker-k8s-front:latest
           name: hero-ui
           ports:
             - containerPort: 80

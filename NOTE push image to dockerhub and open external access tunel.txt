@@ -1,0 +1,16 @@
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+
+------------------------------------------------------------------------------
+
+docker tag rest-service:latest medzyed/rest-service:latest
+docker push medzyed/rest-service:latest
+
+docker tag docker-k8s-front:latest medzyed/docker-k8s-front:latest
+docker push medzyed/docker-k8s-front:latest
+
+----------------------------- opne tunel to get an external access to the service --------------------------------------
+
+minikube service db --url  , where db is service name
+minikube service app --url
+minikube service frontend--url

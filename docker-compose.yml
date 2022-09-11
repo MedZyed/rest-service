@@ -5,6 +5,7 @@ services:
     image: 'rest-service:latest'
     build:
       context: .
+      dockerfile: Dockerfile
     ports:
     - "8080:8080"
     container_name: app
@@ -32,6 +33,7 @@ services:
     container_name: hero-ui
     build:
       context: ../docker-k8s-front
+      dockerfile: ../docker-k8s-front/Dockerfile
     ports:
       - "4200:80"
     depends_on:

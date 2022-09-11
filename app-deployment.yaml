@@ -27,7 +27,7 @@ spec:
         - env:
             - name: DB_SERVER
               value: db
-          image: rest-service:latest
+          image: medzyed/rest-service:latest
           name: app
           ports:
             - containerPort: 8080
